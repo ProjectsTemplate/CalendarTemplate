@@ -45,6 +45,20 @@ public class CalendarDayView extends LinearLayout {
         mLayoutBackground.setBackgroundResource(R.drawable.oval_purple_solid);
     }
 
+    public void setSelectDatesStype(int drawableId, int textColorId ){
+        mLayoutBackground.setBackgroundResource(drawableId);
+        mTextDay.setTextColor(textColorId);
+
+    }
+    public void setBackgroudResource(int backgroudId){
+        mLayoutBackground.setBackgroundResource(backgroudId);
+    }
+    public void setBackgroudColor(int colorId){
+        mLayoutBackground.setBackgroundColor(colorId);
+    }
+    public void setDateTextColor(int colorId){
+        mTextDay.setTextColor(colorId);
+    }
     public void unsetPurpleSolidOvalBackground() {
         mLayoutBackground.setBackgroundResource(R.drawable.oval_black_solid);
     }

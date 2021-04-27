@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.androidcalendar.R;
 import com.androidcalendar.adapters.CalendarViewPagerAdapter;
 import com.androidcalendar.interfaces.OnDateSelectedListener;
+import com.androidcalendar.objects.CalendarDate;
 import com.androidcalendar.objects.CalendarMonth;
 
 import java.util.ArrayList;
@@ -63,6 +64,9 @@ public class CustomCalendarView extends FrameLayout implements View.OnClickListe
         mViewPagerAdapter.setOnDateSelectedListener(listener);
     }
 
+    public void setDatesBackgroudColor(ArrayList<CalendarDate> calendarDates, int backgroudId, int textColor){
+        mViewPagerAdapter.setDateItemsColor(calendarDates, backgroudId, textColor);
+    }
     @Override
     public void onClick(View view) {
         switch (view.getId()) {

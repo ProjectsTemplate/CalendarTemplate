@@ -5,6 +5,7 @@ import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.androidcalendar.R;
 import com.androidcalendar.interfaces.OnDateSelectedListener;
 import com.androidcalendar.interfaces.OnDayViewClickListener;
 import com.androidcalendar.objects.CalendarDate;
@@ -25,11 +26,13 @@ public class CalendarViewPagerAdapter extends PagerAdapter implements OnDayViewC
     private List<CalendarMonth> mData;
     private CalendarDate mSelectedDate;
     private OnDateSelectedListener mListener;
+    ArrayList<CalendarDate> calendarDates;
 
     public CalendarViewPagerAdapter(List<CalendarMonth> list, ViewPager viewPager) {
         mData = list;
         mViewPager = viewPager;
         mSelectedDate = new CalendarDate(Calendar.getInstance());
+        calendarDates = new ArrayList<>();
     }
 
     @Override
@@ -98,18 +101,27 @@ public class CalendarViewPagerAdapter extends PagerAdapter implements OnDayViewC
         }
     }
 
+    public CalendarDate getSelectDate(){
+        return mSelectedDate;
+    }
+    private void SetSelectDate(CalendarDate calendarDate){
+        mSelectedDate = calendarDate;
+    }
     @Override
     public void onDayViewClick(CalendarDayView view) {
         // unset old selection
         decorateSelection(mSelectedDate.toString(), false);
 
         // set new selection
+        SetSelectDate(view.getDate());
         mSelectedDate = view.getDate();
+        calendarDates.add(view.getDate());
         decorateSelection(mSelectedDate.toString(), true);
 
         if (mListener != null) {
             mListener.onDateSelected(new CalendarDate(mSelectedDate));
         }
+        SetDateItemClickHisstory(calendarDates);
     }
 
     private void decorateSelection(String tag, boolean isSelected) {
@@ -125,4 +137,29 @@ public class CalendarViewPagerAdapter extends PagerAdapter implements OnDayViewC
 
         }
     }
+
+    private void SetDateItemClickHisstory(ArrayList<CalendarDate> calendarDates){
+        ArrayList<CalendarDate> calendarDates1 = new ArrayList<>();
+        for(int intdex = 0; intdex<calendarDates.size()-1; intdex++){
+            calendarDates1.add(calendarDates.get(intdex));
+        }
+        setDateItemsColor(calendarDates1, R.drawable.oval_white_solid, R.color.app_black);
+    }
+    public void setDateItemsColor(ArrayList<CalendarDate> calendarDates, int res, int textColorId){
+        if(calendarDates == null || calendarDates.size()<=0)
+            return;
+        ArrayList<View> output = new ArrayList<>();
+
+        for(int intdex = 0; intdex<calendarDates.size(); intdex++){
+            String tag = calendarDates.get(intdex).toString();
+            mViewPager.findViewsWithText(output, tag, FIND_VIEWS_WITH_CONTENT_DESCRIPTION);
+            for (View outputView : output) {
+                CalendarDayView dayView = (CalendarDayView) outputView;
+                dayView.setBackgroudResource(res);
+                dayView.setDateTextColor(textColorId);
+            }
+        }
+
+    }
+
 }
